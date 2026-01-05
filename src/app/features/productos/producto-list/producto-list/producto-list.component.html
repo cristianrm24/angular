@@ -1,0 +1,11 @@
+<h2>Productos</h2>
+
+<div *ngIf="cargando">Cargando...</div>
+
+<ul>
+  <li *ngFor="let p of productos">
+    <strong>{{ p.nombre }}</strong><br>
+    {{ p.descripcion }}<br>
+    Precio: ${{ p.precio }} | Stock: {{ p.stock }}
+  </li>
+</ul>
