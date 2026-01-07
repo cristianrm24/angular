@@ -1,0 +1,9 @@
+<h2>Categorías</h2>
+
+<div *ngIf="cargando">Cargando...</div>
+
+<ul *ngIf="!cargando">
+  <li *ngFor="let c of categorias">
+    {{ c.nombre }}
+  </li>
+</ul>
