@@ -21,8 +21,26 @@ export class ProductoListComponent implements OnInit {
   ngOnInit(): void {
     this.cargarProductos();
   }
+cargarProductos() {
+  this.cargando = true;
 
-  cargarProductos() {
+  this.productoService.listar().subscribe({
+    next: data => {
+      console.log('DATA RECIBIDA:', data);
+      this.productos = data;
+      this.cargando = false;
+    },
+    error: err => {
+      console.error('ERROR:', err);
+      this.cargando = false;
+    },
+    complete: () => {
+      console.log('COMPLETADO');
+    }
+  });
+}
+
+ /* cargarProductos() {
     this.cargando = true;
     this.productoService.listar().subscribe({
       next: data => {
@@ -34,5 +52,5 @@ export class ProductoListComponent implements OnInit {
         this.cargando = false;
       }
     });
-  }
+  }*/
 }
