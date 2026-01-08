@@ -1,0 +1,26 @@
+<nav class="menu">
+  <a routerLink="/">Inicio</a>
+  <a routerLink="/productos">Productos</a>
+  <a routerLink="/login">Iniciar sesión</a>
+  <a routerLink="/registro">Crear cuenta</a>
+  <a routerLink="/carrito">Carrito</a>
+</nav>
+
+<hr>
+
+<h1>Tienda en línea</h1>
+
+<div *ngFor="let categoria of categorias">
+  <h2>{{ categoria.nombre }}</h2>
+
+  <div class="productos">
+    <div *ngFor="let p of productosPorCategoria[categoria.idCategoria]">
+      <h4>{{ p.nombre }}</h4>
+      <p>Precio: ${{ p.precio }}</p>
+
+      <button (click)="agregar(p)">
+        Agregar al carrito
+      </button>
+    </div>
+  </div>
+</div>

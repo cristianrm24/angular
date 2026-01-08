@@ -3,7 +3,8 @@ import { CommonModule } from '@angular/common';
 
 import { ProductoService } from '../../../../service/producto.service';
 import { Producto } from '../../../../data/producto/producto';
-
+import { Router } from '@angular/router';
+import { CarritoService } from '../../../../service/carrito.service';
 
 @Component({
   selector: 'app-producto-list',
@@ -16,7 +17,10 @@ export class ProductoListComponent implements OnInit {
   productos: Producto[] = [];
   cargando = false;
 
-  constructor(private productoService: ProductoService) {}
+  constructor(  private productoService: ProductoService,
+  private carritoService: CarritoService,
+  private router: Router
+) {}
 
   ngOnInit(): void {
     this.cargarProductos();
@@ -39,7 +43,25 @@ cargarProductos() {
     }
   });
 }
+editar(producto: any) {
+  this.router.navigate(['/productos/editar', producto.idProducto]);
+}
 
+eliminar(producto: any) {
+  if (!confirm('¿Eliminar producto?')) return;
+
+  this.productoService.eliminar(producto.idProducto).subscribe({
+    next: () => {
+      alert('Producto eliminado');
+      this.cargarProductos();
+    },
+    error: err => console.error(err)
+  });
+}
+agregarAlCarrito(producto: any) {
+  this.carritoService.agregarProducto(producto);
+  alert('Producto agregado al carrito');
+}
  /* cargarProductos() {
     this.cargando = true;
     this.productoService.listar().subscribe({

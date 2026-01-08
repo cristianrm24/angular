@@ -4,8 +4,10 @@ import { FormsModule } from '@angular/forms';
 
 import { ProductoService } from '../../../../service/producto.service';
 import { CategoriaService } from '../../../../service/categoria.service';
+import { ProductoFormDTO } from '../../../../data/producto/producto-form-dto';
 
 import { Categoria } from '../../../../data/categoria/categoria';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-producto-form',
@@ -13,54 +15,76 @@ import { Categoria } from '../../../../data/categoria/categoria';
   imports: [CommonModule, FormsModule],
   templateUrl: './producto-form.component.html'
 })
+
 export class ProductoFormComponent implements OnInit {
+
+  idProducto: number | null = null;
+  esEdicion = false;
 
   categorias: Categoria[] = [];
 
-  producto = {
-    nombre: '',
-    precio: 0,
-    stock: 0,
-    categoria: {
-      idCategoria: null as number | null
-    }
-  };
+producto: ProductoFormDTO = {
+  nombre: '',
+  precio: 0,
+  stock: 0,
+  categoria: {
+    idCategoria: null
+  }
+};
+
 
   guardando = false;
 
   constructor(
     private productoService: ProductoService,
-    private categoriaService: CategoriaService
+    private categoriaService: CategoriaService,
+    private route: ActivatedRoute,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
+
+    // cargar categorias
     this.categoriaService.listar().subscribe({
-      next: data => {
-        console.log('CATEGORIAS:', data);
-        this.categorias = data;
-      },
+      next: data => this.categorias = data,
       error: err => console.error(err)
+    });
+
+    // detectar edición
+    this.route.paramMap.subscribe(params => {
+      const id = params.get('id');
+      if (id) {
+        this.idProducto = +id;
+        this.esEdicion = true;
+
+        this.productoService.obtener(this.idProducto).subscribe((p: any) => {
+          this.producto = {
+            nombre: p.nombre,
+            precio: p.precio,
+            stock: p.stock,
+            categoria: {
+              idCategoria: p.categoria?.idCategoria ?? null
+            }
+          };
+        });
+      }
     });
   }
 
   guardar() {
-    console.log('JSON ENVIADO:', this.producto);
     this.guardando = true;
 
-    this.productoService.crear(this.producto as any).subscribe({
+    const request = this.idProducto
+      ? this.productoService.actualizar(this.idProducto, this.producto)
+      : this.productoService.crear(this.producto);
+
+    request.subscribe({
       next: () => {
-        alert('Producto creado correctamente');
-        this.producto = {
-          nombre: '',
-          precio: 0,
-          stock: 0,
-          categoria: { idCategoria: null }
-        };
-        this.guardando = false;
+        alert(this.idProducto ? 'Producto actualizado' : 'Producto creado');
+        this.router.navigate(['/productos']);
       },
       error: err => {
         console.error(err);
-        alert('Error al guardar producto');
         this.guardando = false;
       }
     });

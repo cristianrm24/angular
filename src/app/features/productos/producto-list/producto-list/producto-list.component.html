@@ -5,7 +5,15 @@
 <ul>
   <li *ngFor="let p of productos">
     <strong>{{ p.nombre }}</strong><br>
-    {{ p.descripcion }}<br>
-    Precio: ${{ p.precio }} | Stock: {{ p.stock }}
+    Precio: ${{ p.precio }}<br>
+    Stock: {{ p.stock }}<br>
+
+    <button (click)="editar(p)">Editar</button>
+    <button (click)="eliminar(p)">Eliminar</button>
+    <button (click)="agregarAlCarrito(p)">
+  Agregar al carrito
+</button>
   </li>
 </ul>
+
+

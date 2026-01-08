@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Producto } from '../data/producto/producto';
+import { ProductoFormDTO } from '../data/producto/producto-form-dto';
 
 @Injectable({
   providedIn: 'root'
@@ -37,13 +38,14 @@ private apiUrl = 'https://proyecto-z9eq.onrender.com/api/v1/productos';
     return this.http.get<Producto>(`${this.apiUrl}/${id}`);
   }
 
-  crear(producto: Producto): Observable<Producto> {
-    return this.http.post<Producto>(this.apiUrl, producto);
-  }
+crear(producto: ProductoFormDTO) {
+  return this.http.post(this.apiUrl, producto);
+}
 
-  actualizar(id: number, producto: Producto): Observable<Producto> {
-    return this.http.put<Producto>(`${this.apiUrl}/${id}`, producto);
-  }
+actualizar(id: number, producto: ProductoFormDTO) {
+  return this.http.put(`${this.apiUrl}/${id}`, producto);
+}
+
 
   actualizarStock(id: number, stock: number): Observable<Producto> {
     return this.http.patch<Producto>(

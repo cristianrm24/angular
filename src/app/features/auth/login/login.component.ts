@@ -1,0 +1,29 @@
+import { Component } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
+import { AuthService } from '../../../service/auth.service';
+
+@Component({
+  standalone: true,
+  imports: [CommonModule, FormsModule],
+  templateUrl: './login.component.html'
+})
+export class LoginComponent {
+
+  email = '';
+  password = '';
+
+  constructor(
+    private authService: AuthService,
+    private router: Router
+  ) {}
+
+  login() {
+    if (this.authService.login(this.email, this.password)) {
+      this.router.navigate(['/']);
+    } else {
+      alert('Credenciales inválidas');
+    }
+  }
+}
