@@ -29,9 +29,10 @@ export class HomeComponent implements OnInit {
       this.categorias = cats;
 
       cats.forEach(c => {
-        this.productoService.listar(c.idCategoria).subscribe(prods => {
-          this.productosPorCategoria[c.idCategoria] = prods;
-        });
+this.productoService.listar({ categoria: c.idCategoria }).subscribe(prods => {
+  this.productosPorCategoria[c.idCategoria] = prods;
+});
+
       });
     });
   }
