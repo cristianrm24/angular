@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { AuthService } from '../../../../service/auth.service';
 
 import { ProductoService } from '../../../../service/producto.service';
 import { Producto } from '../../../../data/producto/producto';
@@ -19,6 +20,8 @@ export class ProductoListComponent implements OnInit {
 
   constructor(  private productoService: ProductoService,
   private carritoService: CarritoService,
+      private authService: AuthService,
+
   private router: Router
 ) {}
 
@@ -58,10 +61,16 @@ eliminar(producto: any) {
     error: err => console.error(err)
   });
 }
-agregarAlCarrito(producto: any) {
+
+agregarAlCarrito(producto: Producto) {
+  if (!this.authService.estaAutenticado()) {
+    this.router.navigate(['/login']);
+    return;
+  }
+
   this.carritoService.agregarProducto(producto);
-  alert('Producto agregado al carrito');
 }
+
  /* cargarProductos() {
     this.cargando = true;
     this.productoService.listar().subscribe({

@@ -5,6 +5,7 @@ import { RouterModule, Router } from '@angular/router';
 import { ProductoService } from '../../../service/producto.service';
 import { CategoriaService } from '../../../service/categoria.service';
 import { AuthService } from '../../../service/auth.service';
+import { CarritoService } from '../../../service/carrito.service';
 
 @Component({
   selector: 'app-home',
@@ -13,6 +14,7 @@ import { AuthService } from '../../../service/auth.service';
   templateUrl: './home.component.html'
 })
 export class HomeComponent implements OnInit {
+usuario: any = null;
 
   categorias: any[] = [];
   productosPorCategoria: any = {};
@@ -20,11 +22,15 @@ export class HomeComponent implements OnInit {
   constructor(
     private productoService: ProductoService,
     private categoriaService: CategoriaService,
+      private carritoService: CarritoService,
+
     private authService: AuthService,
     private router: Router
   ) {}
 
   ngOnInit(): void {
+      this.usuario = this.authService.obtenerUsuario();
+
     this.categoriaService.listar().subscribe(cats => {
       this.categorias = cats;
 
@@ -37,12 +43,20 @@ this.productoService.listar({ categoria: c.idCategoria }).subscribe(prods => {
     });
   }
 
-  agregar(producto: any) {
-    if (!this.authService.estaAutenticado()) {
-      this.router.navigate(['/login']);
-      return;
-    }
+
+agregar(producto: any) {
+  if (!this.authService.estaAutenticado()) {
+    this.router.navigate(['/login']);
+    return;
+  }
+
+  this.carritoService.agregarProducto(producto);
+}
+logout() {
+  this.authService.logout();
+  location.reload(); // recarga limpia carrito
+}
 
     // luego aquí va el carrito
   }
-}
+

@@ -3,6 +3,8 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from '../../../service/auth.service';
+import { Usuario } from '../../../data/auth/usuario';
+import { CarritoService } from '../../../service/carrito.service';
 
 @Component({
   standalone: true,
@@ -16,14 +18,25 @@ export class LoginComponent {
 
   constructor(
     private authService: AuthService,
+      private carritoService: CarritoService,
+
     private router: Router
   ) {}
 
-  login() {
-    if (this.authService.login(this.email, this.password)) {
+login() {
+  this.authService.login(this.email, this.password).subscribe({
+    next: (usuario) => {
+      this.authService.guardarSesion(usuario);
+
       this.router.navigate(['/']);
-    } else {
-      alert('Credenciales inválidas');
+    },
+    error: err => {
+      alert('Credenciales incorrectas');
+            console.error(err);
+
     }
-  }
+  });
+}
+
+
 }
