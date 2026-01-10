@@ -1,22 +1,56 @@
-<h2>Categorías</h2>
+<div class="container my-5">
 
-<div *ngIf="cargando">Cargando...</div>
-<!--
-  <ul *ngIf="!cargando">
-    <li *ngFor="let c of categorias">
-      {{ c.nombre }}
-      <button *ngIf="authService.esAdmin()" [routerLink]="['/categorias/editar', c.idCategoria]">
-        Editar
-      </button>
-      <button *ngIf="authService.esAdmin()" [routerLink]="['/categorias/editar', c.idCategoria]">
-      Editar
-    </button>
-    <a [routerLink]="['/categorias', c.idCategoria]">Ver</a>
-  </li>
-  <button *ngIf="authService.esAdmin()" routerLink="/categorias/nueva">
-    Nueva categoría
-  </button>
+  <!-- Título -->
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h2 class="fw-bold">Categorías</h2>
 
-</ul>
+    <!-- Botón nueva categoría (solo admin) -->
+    <a *ngIf="authService.esAdmin()"
+       routerLink="/categorias/nueva"
+       class="btn btn-success">
+      <i class="bi bi-plus-circle me-1"></i>
+      Nueva categoría
+    </a>
+  </div>
 
--->
+  <!-- Cargando -->
+  <div *ngIf="cargando" class="text-center my-5">
+    <div class="spinner-border text-primary"></div>
+    <p class="mt-2">Cargando categorías...</p>
+  </div>
+
+  <!-- Grid de categorías -->
+  <div class="row" *ngIf="!cargando">
+
+    <div class="col-md-4 mb-3" *ngFor="let c of categorias">
+      <div class="card shadow-sm h-100 text-center">
+
+        <div class="card-body">
+          <i class="bi bi-tags fs-1 text-secondary mb-2"></i>
+
+          <h5 class="card-title">{{ c.nombre }}</h5>
+
+          <div class="d-grid gap-2 mt-3">
+
+            <!-- Ver -->
+            <a [routerLink]="['/categorias', c.idCategoria]"
+               class="btn btn-outline-primary btn-sm">
+              Ver productos
+            </a>
+
+            <!-- Editar (solo admin) -->
+            <a *ngIf="authService.esAdmin()"
+               [routerLink]="['/categorias/editar', c.idCategoria]"
+               class="btn btn-outline-warning btn-sm">
+              Editar
+            </a>
+
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+
+</div>

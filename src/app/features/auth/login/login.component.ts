@@ -5,10 +5,11 @@ import { Router } from '@angular/router';
 import { AuthService } from '../../../service/auth.service';
 import { Usuario } from '../../../data/auth/usuario';
 import { CarritoService } from '../../../service/carrito.service';
+import { RouterModule } from '@angular/router';
 
 @Component({
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule,RouterModule ],
   templateUrl: './login.component.html'
 })
 export class LoginComponent {

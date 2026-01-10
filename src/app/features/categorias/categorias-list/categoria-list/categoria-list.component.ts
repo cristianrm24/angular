@@ -2,11 +2,13 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CategoriaService } from '../../../../service/categoria.service';
 import { Categoria } from '../../../../data/categoria/categoria';
+import { RouterModule } from '@angular/router';
+import { AuthService } from '../../../../service/auth.service';
 
 @Component({
   selector: 'app-categoria-list',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule,RouterModule],
   templateUrl: './categoria-list.component.html'
 })
 export class CategoriaListComponent implements OnInit {
@@ -14,7 +16,7 @@ export class CategoriaListComponent implements OnInit {
   categorias: Categoria[] = [];
   cargando = false;
 
-  constructor(private categoriaService: CategoriaService) {}
+  constructor(private categoriaService: CategoriaService, public authService: AuthService) {}
 
   ngOnInit(): void {
     this.cargarCategorias();

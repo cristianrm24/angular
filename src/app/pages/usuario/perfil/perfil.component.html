@@ -1,9 +1,45 @@
-<h2>Mi perfil</h2>
+<div class="container d-flex justify-content-center align-items-center"
+     style="min-height: 80vh;">
 
-<div *ngIf="usuario">
-  <p><b>Nombre:</b> {{ usuario.nombre }}</p>
-  <p><b>Email:</b> {{ usuario.email }}</p>
-  <p><b>Dirección:</b> {{ usuario.direccion }}</p>
+  <div class="card shadow-lg p-4" style="max-width: 500px; width:100%;">
 
-  <a routerLink="/perfil/editar">Editar perfil</a>
+    <div class="text-center mb-4">
+      <i class="bi bi-person-circle fs-1 text-primary"></i>
+      <h2 class="fw-bold mt-2">Mi perfil</h2>
+      <p class="text-muted">Información de tu cuenta</p>
+    </div>
+
+    <div *ngIf="usuario">
+
+      <div class="mb-3">
+        <small class="text-muted">Nombre</small>
+        <p class="fw-semibold">{{ usuario.nombre }}</p>
+      </div>
+
+      <div class="mb-3">
+        <small class="text-muted">Correo electrónico</small>
+        <p class="fw-semibold">{{ usuario.email }}</p>
+      </div>
+
+      <div class="mb-4">
+        <small class="text-muted">Dirección</small>
+        <p class="fw-semibold">{{ usuario.direccion }}</p>
+      </div>
+
+      <!-- Botones -->
+      <div class="d-grid gap-2">
+
+        <a routerLink="/perfil/editar" class="btn btn-primary">
+          Editar perfil
+        </a>
+
+        <a routerLink="/" class="btn btn-outline-secondary">
+          Volver al inicio
+        </a>
+
+      </div>
+
+    </div>
+
+  </div>
 </div>

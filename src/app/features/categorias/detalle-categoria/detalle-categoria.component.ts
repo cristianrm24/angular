@@ -1,8 +1,10 @@
-import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { ActivatedRoute, RouterModule } from '@angular/router';
-import { Categoria } from '../../../data/categoria/categoria';
+
 import { CategoriaService } from '../../../service/categoria.service';
+import { Categoria } from '../../../data/categoria/categoria';
+import { Producto } from '../../../data/producto/producto';
 
 @Component({
   standalone: true,
@@ -11,7 +13,9 @@ import { CategoriaService } from '../../../service/categoria.service';
 })
 export class CategoriaDetalleComponent implements OnInit {
 
-  categoria!: Categoria;
+categoria?: Categoria;
+  productos: Producto[] = [];
+  cargando = true;
 
   constructor(
     private route: ActivatedRoute,
@@ -20,8 +24,16 @@ export class CategoriaDetalleComponent implements OnInit {
 
   ngOnInit() {
     const id = Number(this.route.snapshot.paramMap.get('id'));
+
     this.categoriaService.obtener(id).subscribe({
       next: data => this.categoria = data
+    });
+
+    this.categoriaService.productosPorCategoria(id).subscribe({
+      next: data => {
+        this.productos = data;
+        this.cargando = false;
+      }
     });
   }
 }

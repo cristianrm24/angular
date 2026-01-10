@@ -32,11 +32,6 @@ export const routes: Routes = [
   { path: 'perfil/editar', loadComponent: () => import('./pages/usuario/editar-perfil/editar-perfil.component').then(m => m.EditarPerfilComponent)
 },
 {
-  path: 'categorias',
-  loadComponent: () => import('./features/categorias/categorias-list/categoria-list/categoria-list.component')
-    .then(m => m.CategoriaListComponent)
-},
-{
   path: 'categorias/nueva',
   loadComponent: () => import('./features/categorias/categorias-list/categoria-form/categoria-form.component')
     .then(m => m.CategoriaFormComponent)

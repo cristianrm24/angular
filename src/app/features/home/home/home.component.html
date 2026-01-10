@@ -28,6 +28,10 @@
         <a routerLink="/perfil" class="btn btn-outline-light btn-sm ms-2">Perfil</a>
         <a routerLink="/perfil/pedidos" class="btn btn-outline-light btn-sm ms-1">Pedidos</a>
         <button (click)="logout()" class="btn btn-danger btn-sm ms-1">Salir</button>
+            <!-- SOLO ADMIN -->
+    <a *ngIf="authService.esAdmin()" routerLink="/categorias">
+      Administrar categorías
+    </a>
       </span>
 
       <!-- Usuario no logueado -->
