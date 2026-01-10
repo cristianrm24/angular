@@ -12,26 +12,37 @@ export class CarritoService {
   private items: CarritoItem[] = [];
   private usuarioActual: Usuario | null = null;
 
-  obtenerItems(): CarritoItem[] {
-    return this.items;
-  }
+obtenerItems(): CarritoItem[] {
+  const usuario = this.authService.obtenerUsuario();
+  if (!usuario) return [];
 
-  constructor(private authService: AuthService) {
-    this.authService.usuario$.subscribe(usuario => {
-      this.usuarioActual = usuario;
+  const data = localStorage.getItem(`carrito_${usuario.idUsuario}`);
+  return data ? JSON.parse(data) : [];
+}
 
-      if (usuario) {
-        const data = localStorage.getItem(`carrito_${usuario.id}`);
-        this.items = data ? JSON.parse(data) : [];
-      } else {
-        this.items = [];
-      }
-    });
-  }
+constructor(private authService: AuthService) {
+  console.log('🛒 CarritoService creado');
+
+  this.authService.usuario$.subscribe(usuario => {
+    console.log('👤 Usuario cambiado:', usuario);
+
+    this.items = [];
+    this.usuarioActual = usuario;
+
+    if (usuario) {
+const key = `carrito_${usuario.idUsuario}`;
+      console.log('📦 Cargando carrito:', key);
+
+      const data = localStorage.getItem(key);
+      this.items = data ? JSON.parse(data) : [];
+    }
+  });
+}
+
 
   private getKey(): string | null {
     const usuario = this.authService.obtenerUsuario();
-    return usuario ? `carrito_${usuario.id}` : null;
+    return usuario ? `carrito_${usuario.idUsuario}` : null;
   }
 
 private cargarCarrito(idUsuario: number) {
@@ -56,7 +67,7 @@ agregarProducto(producto: Producto) {
       });
     }
     localStorage.setItem(
-      `carrito_${this.usuarioActual.id}`,
+      `carrito_${this.usuarioActual.idUsuario}`,
       JSON.stringify(this.items)
     );
 
@@ -77,7 +88,7 @@ agregarProducto(producto: Producto) {
     this.items = this.items.filter(i => i.producto.idProducto !== idProducto);
 
     localStorage.setItem(
-      `carrito_${this.usuarioActual.id}`,
+      `carrito_${this.usuarioActual.idUsuario}`,
       JSON.stringify(this.items)
     );
   }
@@ -87,7 +98,7 @@ private guardarCarrito() {
   if (!usuario) return;
 
   localStorage.setItem(
-    `carrito_${usuario.id}`,
+    `carrito_${usuario.idUsuario}`,
     JSON.stringify(this.items)
   );
 }

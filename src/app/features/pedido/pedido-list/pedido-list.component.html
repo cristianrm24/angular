@@ -1,0 +1,10 @@
+<h2>Mis pedidos</h2>
+
+<div *ngFor="let p of pedidos" class="pedido">
+  <p><b>ID:</b> {{ p.idPedido }}</p>
+  <p><b>Fecha:</b> {{ p.fecha }}</p>
+  <p><b>Total:</b> ${{ p.total }}</p>
+
+  <a [routerLink]="['/pedido', p.idPedido]">Ver detalle</a>
+  <hr>
+</div>

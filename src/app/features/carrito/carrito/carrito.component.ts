@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CarritoService } from '../../../service/carrito.service';
 import { CarritoItem } from '../../../data/carrito/carrito-item';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-carrito',
@@ -14,8 +15,13 @@ export class CarritoComponent implements OnInit {
 items: CarritoItem[] = [];
 
 
-  constructor(private carritoService: CarritoService) {}
-
+constructor(
+  private carritoService: CarritoService,
+  private router: Router
+) {}
+irACheckout() {
+  this.router.navigate(['/checkout']);
+}
   ngOnInit(): void {
     this.items = this.carritoService.obtenerItems();
   }

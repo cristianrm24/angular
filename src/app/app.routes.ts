@@ -6,6 +6,8 @@ import { CarritoComponent } from './features/carrito/carrito/carrito.component';
 import { HomeComponent } from './features/home/home/home.component';
 import { LoginComponent } from './features/auth/login/login.component';
 import { RegistroComponent } from './features/auth/registro/registro.component';
+import { CheckoutComponent } from './pages/checkout/checkout.component';
+import { PedidoListComponent } from './features/pedido/pedido-list/pedido-list.component';
 
 export const routes: Routes = [
   { path: 'productos', component: ProductoListComponent },
@@ -15,9 +17,9 @@ export const routes: Routes = [
   { path: '', component: HomeComponent },
   { path: 'home', component: HomeComponent },
   { path: 'login', component: LoginComponent },
+  { path: 'checkout', component: CheckoutComponent },
   { path: 'registro', component: RegistroComponent },
-
-{ path: 'carrito', component: CarritoComponent },
-
+  { path: 'mis-pedidos',component: PedidoListComponent},
+  { path: 'carrito', component: CarritoComponent },
   { path: '', redirectTo: 'productos', pathMatch: 'full' }
 ];

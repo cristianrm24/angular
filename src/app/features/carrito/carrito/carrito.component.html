@@ -17,3 +17,13 @@
 </ul>
 
 <h3>Total: ${{ total() }}</h3>
+<ul>
+
+  <li>
+
+    <button (click)="irACheckout()" [disabled]="items.length === 0">
+      Proceder al pago
+    </button>
+
+  </li>
+</ul>
