@@ -1,0 +1,17 @@
+<h2>Pago</h2>
+
+<p>Seleccione método de pago (simulado)</p>
+
+<ul>
+  <li>💳 Tarjeta de crédito</li>
+  <li>🏦 Transferencia</li>
+  <li>📱 Pago móvil</li>
+</ul>
+
+<button (click)="pagar()" [disabled]="procesando">
+  {{ procesando ? 'Procesando pago...' : 'Pagar ahora' }}
+</button>
+
+<button (click)="cancelar()" [disabled]="procesando">
+  Cancelar
+</button>

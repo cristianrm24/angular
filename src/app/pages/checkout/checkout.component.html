@@ -1,14 +1,15 @@
 <h2>Checkout</h2>
 
-<div *ngFor="let item of items">
-  <p>
-    {{ item.producto.nombre }} -
-    {{ item.cantidad }} x ${{ item.producto.precio }}
-  </p>
+<div *ngIf="cargando">
+  Calculando total...
 </div>
 
-<h3>Total: ${{ total }}</h3>
+<div *ngIf="!cargando">
+  <p><b>Total a pagar:</b> ${{ total }}</p>
 
-<button (click)="confirmarPedido()" [disabled]="procesando">
-  Confirmar pedido
+<button (click)="irAPago()">
+  Proceder al pago
 </button>
+
+
+</div>

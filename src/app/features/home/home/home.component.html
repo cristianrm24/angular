@@ -1,37 +1,187 @@
-<nav class="menu">
-<nav>
-  <a routerLink="/">Inicio</a>
+<!-- NAVBAR -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <div class="container-fluid">
+    <a class="navbar-brand" routerLink="/">MiTienda</a>
 
-  <span *ngIf="usuario">
-    Bienvenido, {{ usuario.nombre }}
-    <button (click)="logout()">Salir</button>
-  </span>
+    <button class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#menu">
+      <span class="navbar-toggler-icon"></span>
+    </button>
 
-  <span *ngIf="!usuario">
-    <a routerLink="/login">Iniciar sesión</a>
-    <a routerLink="/registro">Crear cuenta</a>
-  </span>
+    <div class="collapse navbar-collapse" id="menu">
 
-  <a routerLink="/carrito">Carrito</a>
+      <ul class="navbar-nav me-auto">
+        <li class="nav-item">
+          <a class="nav-link active" routerLink="/">Inicio</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/carrito">Carrito</a>
+        </li>
+      </ul>
+
+      <form class="d-flex me-3">
+        <input class="form-control" placeholder="Buscar productos">
+      </form>
+
+      <!-- Usuario logueado -->
+      <span *ngIf="usuario$ | async as usuario" class="text-white">
+        Hola, {{usuario.nombre}}
+        <a routerLink="/perfil" class="btn btn-outline-light btn-sm ms-2">Perfil</a>
+        <a routerLink="/perfil/pedidos" class="btn btn-outline-light btn-sm ms-1">Pedidos</a>
+        <button (click)="logout()" class="btn btn-danger btn-sm ms-1">Salir</button>
+      </span>
+
+      <!-- Usuario no logueado -->
+      <span *ngIf="!(usuario$ | async)">
+        <a routerLink="/login" class="btn btn-outline-light btn-sm me-1">Ingresar</a>
+        <a routerLink="/registro" class="btn btn-warning btn-sm">Registrarse</a>
+      </span>
+
+    </div>
+  </div>
 </nav>
 
-</nav>
+<!-- CAROUSEL OFERTAS -->
+<div id="carouselOfertas" class="carousel slide" data-bs-ride="carousel">
 
-<hr>
+  <div class="carousel-indicators">
+    <button type="button" data-bs-target="#carouselOfertas" data-bs-slide-to="0" class="active"></button>
+    <button type="button" data-bs-target="#carouselOfertas" data-bs-slide-to="1"></button>
+    <button type="button" data-bs-target="#carouselOfertas" data-bs-slide-to="2"></button>
+  </div>
 
-<h1>Tienda en línea</h1>
+  <div class="carousel-inner">
 
-<div *ngFor="let categoria of categorias">
-  <h2>{{ categoria.nombre }}</h2>
+    <div class="carousel-item active">
+      <img src="assets/banner1.jpg" class="d-block w-100" alt="oferta1">
+      <div class="carousel-caption d-none d-md-block">
+        <h5>Ofertas de temporada</h5>
+        <p>Hasta 30% de descuento</p>
+      </div>
+    </div>
 
-  <div class="productos">
-    <div *ngFor="let p of productosPorCategoria[categoria.idCategoria]">
-      <h4>{{ p.nombre }}</h4>
-      <p>Precio: ${{ p.precio }}</p>
+    <div class="carousel-item">
+      <img src="assets/banner2.jpg" class="d-block w-100" alt="oferta2">
+    </div>
 
-      <button (click)="agregar(p)">
-        Agregar al carrito
-      </button>
+    <div class="carousel-item">
+      <img src="assets/banner3.jpg" class="d-block w-100" alt="oferta3">
+    </div>
+
+  </div>
+
+  <button class="carousel-control-prev" type="button" data-bs-target="#carouselOfertas" data-bs-slide="prev">
+    <span class="carousel-control-prev-icon"></span>
+  </button>
+
+  <button class="carousel-control-next" type="button" data-bs-target="#carouselOfertas" data-bs-slide="next">
+    <span class="carousel-control-next-icon"></span>
+  </button>
+</div>
+
+<!-- HERO -->
+<div class="bg-light p-5 text-center">
+  <h1 class="display-5 fw-bold">Bienvenido a MiTienda</h1>
+  <p class="lead">Encuentra los mejores productos al mejor precio</p>
+  <a href="#productos" class="btn btn-primary btn-lg">
+    Ver productos
+  </a>
+</div>
+
+
+<!-- CATEGORÍAS -->
+<div class="container my-5">
+  <h2 class="text-center mb-4">Categorías</h2>
+
+  <div class="row">
+    <div class="col-md-4 mb-3" *ngFor="let categoria of categorias">
+      <div class="card shadow-sm text-center h-100">
+        <div class="card-body">
+          <h5 class="card-title">{{categoria.nombre}}</h5>
+
+          <button class="btn btn-outline-primary btn-sm"
+                  (click)="seleccionarCategoria(categoria.idCategoria)">
+            Explorar
+          </button>
+        </div>
+      </div>
     </div>
   </div>
 </div>
+
+<div class="container my-5" *ngIf="categoriaSeleccionada">
+
+  <h3 class="text-center mb-4">
+    Productos de
+    {{ getNombreCategoriaSeleccionada() }}
+
+  </h3>
+
+  <div class="row">
+    <div class="col-md-3 mb-4"
+         *ngFor="let p of productosPorCategoria[categoriaSeleccionada]">
+
+      <div class="card h-100 shadow-sm">
+        <div class="text-center pt-4">
+  <i class="bi bi-box-seam fs-1 text-secondary"></i>
+</div>
+
+
+        <div class="card-body text-center">
+          <h6>{{p.nombre}}</h6>
+          <p class="fw-bold text-success">${{p.precio}}</p>
+          <button class="btn btn-primary btn-sm" (click)="agregar(p)">
+            Agregar al carrito
+          </button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+<!-- PRODUCTOS -->
+<div class="container my-5" id="productos">
+  <h2 class="text-center mb-4">Productos destacados</h2>
+
+  <div class="row">
+    <div class="col-md-3 mb-4"
+         *ngFor="let p of productosPorCategoria[categorias[0]?.idCategoria]">
+
+      <div class="card h-100 shadow-sm">
+
+        <!-- Imagen demo -->
+        <div class="text-center pt-4">
+  <i class="bi bi-box-seam fs-1 text-secondary"></i>
+</div>
+
+        <div class="card-body text-center">
+          <h6 class="card-title">{{p.nombre}}</h6>
+          <p class="fw-bold text-success">${{p.precio}}</p>
+          <button class="btn btn-primary btn-sm" (click)="agregar(p)">
+            Agregar al carrito
+          </button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+<!-- BENEFICIOS -->
+<div class="bg-dark text-white py-4">
+  <div class="container text-center">
+    <div class="row">
+      <div class="col-md-4">🚚 Envíos rápidos</div>
+      <div class="col-md-4">🔒 Pagos seguros</div>
+      <div class="col-md-4">💬 Soporte 24/7</div>
+    </div>
+  </div>
+</div>
+
+
+<!-- FOOTER -->
+<footer class="bg-secondary text-white text-center p-3">
+  © 2026 MiTienda - Todos los derechos reservados
+</footer>

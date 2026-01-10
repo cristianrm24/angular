@@ -1,9 +1,22 @@
 <h2>Categorías</h2>
 
 <div *ngIf="cargando">Cargando...</div>
-
-<ul *ngIf="!cargando">
-  <li *ngFor="let c of categorias">
-    {{ c.nombre }}
+<!--
+  <ul *ngIf="!cargando">
+    <li *ngFor="let c of categorias">
+      {{ c.nombre }}
+      <button *ngIf="authService.esAdmin()" [routerLink]="['/categorias/editar', c.idCategoria]">
+        Editar
+      </button>
+      <button *ngIf="authService.esAdmin()" [routerLink]="['/categorias/editar', c.idCategoria]">
+      Editar
+    </button>
+    <a [routerLink]="['/categorias', c.idCategoria]">Ver</a>
   </li>
+  <button *ngIf="authService.esAdmin()" routerLink="/categorias/nueva">
+    Nueva categoría
+  </button>
+
 </ul>
+
+-->

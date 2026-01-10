@@ -22,6 +22,9 @@ export class LoginComponent {
 
     private router: Router
   ) {}
+pruebaClick() {
+  console.log("El botón fue presionado correctamente");
+}
 
 login() {
   this.authService.login(this.email, this.password).subscribe({

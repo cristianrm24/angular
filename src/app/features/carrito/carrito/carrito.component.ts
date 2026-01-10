@@ -12,7 +12,6 @@ import { Router } from '@angular/router';
 })
 export class CarritoComponent implements OnInit {
 
-items: CarritoItem[] = [];
 
 
 constructor(
@@ -22,16 +21,43 @@ constructor(
 irACheckout() {
   this.router.navigate(['/checkout']);
 }
-  ngOnInit(): void {
-    this.items = this.carritoService.obtenerItems();
-  }
+items: any[] = [];
+total = 0;
+cargando = true;
 
-  eliminar(id: number) {
-    this.carritoService.eliminarProducto(id);
-    this.items = this.carritoService.obtenerItems();
-  }
+ngOnInit(): void {
+  this.cargarCarrito();
+}
 
-  total(): number {
-    return this.carritoService.total();
-  }
+cargarCarrito() {
+  this.carritoService.obtenerCarrito().subscribe({
+    next: data => {
+      this.items = data.items;
+    },
+    error: err => console.error(err)
+  });
+}
+
+
+eliminar(idProducto: number) {
+  this.carritoService.eliminarProducto(idProducto).subscribe({
+    next: () => {
+      console.log('🗑 Producto eliminado');
+      this.cargarCarrito(); // 🔥 ESTO ES CLAVE
+    },
+    error: err => console.error(err)
+  });
+}
+
+
+
+vaciar() {
+  this.carritoService.vaciarCarrito().subscribe(() => {
+    this.items = [];
+    this.total = 0;
+  });
+}
+
+
+
 }

@@ -1,113 +1,70 @@
+import { EMPTY } from 'rxjs';
 import { Injectable } from '@angular/core';
-import { CarritoItem } from '../data/carrito/carrito-item';
-import { Producto } from '../data/producto/producto';
+import { HttpClient } from '@angular/common/http';
 import { AuthService } from './auth.service';
-import { Usuario } from '../data/auth/usuario';
+import { environment } from '../../environments/environments';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CarritoService {
 
-  private items: CarritoItem[] = [];
-  private usuarioActual: Usuario | null = null;
+  private api = environment.apiUrl;
 
-obtenerItems(): CarritoItem[] {
-  const usuario = this.authService.obtenerUsuario();
-  if (!usuario) return [];
+  constructor(
+    private http: HttpClient,
+    private authService: AuthService
+  ) {}
 
-  const data = localStorage.getItem(`carrito_${usuario.idUsuario}`);
-  return data ? JSON.parse(data) : [];
-}
-
-constructor(private authService: AuthService) {
-  console.log('🛒 CarritoService creado');
-
-  this.authService.usuario$.subscribe(usuario => {
-    console.log('👤 Usuario cambiado:', usuario);
-
-    this.items = [];
-    this.usuarioActual = usuario;
-
-    if (usuario) {
-const key = `carrito_${usuario.idUsuario}`;
-      console.log('📦 Cargando carrito:', key);
-
-      const data = localStorage.getItem(key);
-      this.items = data ? JSON.parse(data) : [];
-    }
-  });
-}
-
-
-  private getKey(): string | null {
+  private getUserId(): number {
     const usuario = this.authService.obtenerUsuario();
-    return usuario ? `carrito_${usuario.idUsuario}` : null;
-  }
-
-private cargarCarrito(idUsuario: number) {
-  const data = localStorage.getItem(`carrito_${idUsuario}`);
-  this.items = data ? JSON.parse(data) : [];
-}
-agregarProducto(producto: Producto) {
-    const item = this.items.find(i => i.producto.idProducto === producto.idProducto);
-    if (!this.usuarioActual) {
-      console.warn('No hay usuario, no se puede guardar carrito');
-      return;
+    if (!usuario) {
+      throw new Error('Usuario no autenticado');
     }
-
-    if (item) {
-      item.cantidad++;
-      item.subtotal = item.cantidad * producto.precio;
-    } else {
-      this.items.push({
-        producto,
-        cantidad: 1,
-        subtotal: producto.precio
-      });
-    }
-    localStorage.setItem(
-      `carrito_${this.usuarioActual.idUsuario}`,
-      JSON.stringify(this.items)
-    );
-
-
+    return usuario.idUsuario;
   }
 
-
-
-  vaciarCarrito() {
-    this.items = [];
-    this.guardarCarrito();
-  }
-
-
-  eliminarProducto(idProducto: number) {
-    if (!this.usuarioActual) return;
-
-    this.items = this.items.filter(i => i.producto.idProducto !== idProducto);
-
-    localStorage.setItem(
-      `carrito_${this.usuarioActual.idUsuario}`,
-      JSON.stringify(this.items)
-    );
-  }
-
-private guardarCarrito() {
+obtenerCarrito() {
   const usuario = this.authService.obtenerUsuario();
-  if (!usuario) return;
+  if (!usuario) return EMPTY;
 
-  localStorage.setItem(
-    `carrito_${usuario.idUsuario}`,
-    JSON.stringify(this.items)
+  return this.http.get<any>(
+    `${environment.apiUrl}/usuarios/${usuario.idUsuario}/carrito`
   );
 }
 
-  vaciar() {
-    this.items = [];
+
+  agregarProducto(idProducto: number, cantidad: number = 1) {
+    return this.http.post(
+      `${this.api}/usuarios/${this.getUserId()}/carrito/items`,
+      { idProducto, cantidad }
+    );
   }
 
-  total(): number {
-    return this.items.reduce((sum, i) => sum + i.subtotal, 0);
+
+
+eliminarProducto(idProducto: number) {
+  const usuario = this.authService.obtenerUsuario();
+
+  if (!usuario) {
+    console.warn('No hay usuario, no se puede eliminar');
+    return EMPTY; // ✔ Observable válido
+  }
+
+  return this.http.delete(
+    `${environment.apiUrl}/usuarios/${usuario.idUsuario}/carrito/items/${idProducto}`
+  );
+}
+
+  vaciarCarrito() {
+    return this.http.delete(
+      `${this.api}/usuarios/${this.getUserId()}/carrito/items`
+    );
+  }
+
+  total() {
+    return this.http.get<number>(
+      `${this.api}/usuarios/${this.getUserId()}/carrito/total`
+    );
   }
 }

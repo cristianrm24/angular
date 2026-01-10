@@ -1,0 +1,15 @@
+<h2>🎉 ¡Gracias por tu compra!</h2>
+
+<p>Tu pedido fue generado correctamente.</p>
+
+<p><b>Número de pedido:</b> {{ idPedido }}</p>
+
+<a [routerLink]="['/pedido', idPedido]">
+  Ver detalle del pedido
+</a>
+
+<br><br>
+
+<a routerLink="/productos">
+  Seguir comprando
+</a>

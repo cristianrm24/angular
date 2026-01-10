@@ -31,13 +31,20 @@ export class AuthService {
     const data = localStorage.getItem('usuario');
     return data ? JSON.parse(data) : null;
   }
-
+  setUsuario(usuario: Usuario) {
+    localStorage.setItem('usuario', JSON.stringify(usuario));
+    this.usuarioSubject.next(usuario); // 🔥 NOTIFICA A TODOS
+  }
   estaAutenticado(): boolean {
     return this.obtenerUsuario() !== null;
   }
   registrar(data: RegistroDTO) {
     return this.http.post(`${this.apiUrl}/usuarios/registro`, data);
   }
+esAdmin(): boolean {
+  const usuario = this.obtenerUsuario();
+  return usuario?.email === 'admin@gmail.com';
+}
 
 login(email: string, password: string) {
   const params = {

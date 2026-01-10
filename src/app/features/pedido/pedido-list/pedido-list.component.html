@@ -8,3 +8,14 @@
   <a [routerLink]="['/pedido', p.idPedido]">Ver detalle</a>
   <hr>
 </div>
+<div *ngFor="let p of pedidos">
+  <p><b>ID:</b> {{ p.idPedido }}</p>
+  <p><b>Fecha:</b> {{ p.fecha }}</p>
+  <p><b>Total:</b> ${{ p.total }}</p>
+
+  <button (click)="descargarFactura(p.idPedido)">
+    Descargar factura
+  </button>
+
+  <hr>
+</div>

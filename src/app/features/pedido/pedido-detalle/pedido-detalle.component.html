@@ -1,0 +1,28 @@
+<h2>Detalle del pedido</h2>
+
+<div *ngIf="cargando">Cargando...</div>
+
+<div *ngIf="!cargando && pedido">
+  <p><b>ID:</b> {{ pedido.idPedido }}</p>
+  <p><b>Fecha:</b> {{ pedido.fecha }}</p>
+
+  <h3>Productos</h3>
+
+  <table border="1" cellpadding="6">
+    <tr>
+      <th>Producto</th>
+      <th>Precio</th>
+      <th>Cantidad</th>
+      <th>Subtotal</th>
+    </tr>
+
+    <tr *ngFor="let i of pedido.items">
+      <td>{{ i.producto.nombre }}</td>
+      <td>${{ i.producto.precio }}</td>
+      <td>{{ i.cantidad }}</td>
+      <td>${{ i.subtotal }}</td>
+    </tr>
+  </table>
+
+  <h3>Total: ${{ total }}</h3>
+</div>

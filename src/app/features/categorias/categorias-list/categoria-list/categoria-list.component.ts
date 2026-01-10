@@ -37,6 +37,15 @@ cargarCategorias() {
     }
   });
 }
+eliminar(id: number) {
+  if (!confirm('¿Eliminar categoría?')) return;
+
+  this.categoriaService.eliminar(id).subscribe({
+    next: () => {
+      this.categorias = this.categorias.filter(c => c.idCategoria !== id);
+    }
+  });
+}
 
  /* cargarCategorias() {
     this.cargando = true;

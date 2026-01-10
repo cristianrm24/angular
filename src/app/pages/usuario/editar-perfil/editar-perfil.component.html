@@ -1,0 +1,8 @@
+<h2>Editar perfil</h2>
+
+<form (ngSubmit)="guardar()">
+  <input [(ngModel)]="usuario.nombre" name="nombre" placeholder="Nombre">
+  <input [(ngModel)]="usuario.direccion" name="direccion" placeholder="Dirección">
+
+  <button type="submit">Guardar</button>
+</form>

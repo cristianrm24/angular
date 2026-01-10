@@ -61,6 +61,19 @@ eliminar(producto: any) {
     error: err => console.error(err)
   });
 }
+agregar(producto: any) {
+  if (!this.authService.estaAutenticado()) {
+    this.router.navigate(['/login']);
+    return;
+  }
+
+  this.carritoService
+    .agregarProducto(producto.idProducto, 1)
+    .subscribe({
+      next: () => alert('Producto agregado al carrito'),
+      error: err => console.error(err)
+    });
+}
 
 agregarAlCarrito(producto: Producto) {
   if (!this.authService.estaAutenticado()) {
@@ -68,7 +81,7 @@ agregarAlCarrito(producto: Producto) {
     return;
   }
 
-  this.carritoService.agregarProducto(producto);
+ // this.carritoService.agregarProducto(producto);
 }
 
  /* cargarProductos() {

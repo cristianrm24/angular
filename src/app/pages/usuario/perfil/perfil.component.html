@@ -1,0 +1,9 @@
+<h2>Mi perfil</h2>
+
+<div *ngIf="usuario">
+  <p><b>Nombre:</b> {{ usuario.nombre }}</p>
+  <p><b>Email:</b> {{ usuario.email }}</p>
+  <p><b>Dirección:</b> {{ usuario.direccion }}</p>
+
+  <a routerLink="/perfil/editar">Editar perfil</a>
+</div>
