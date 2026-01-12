@@ -46,6 +46,22 @@ actualizar(id: number, producto: ProductoFormDTO) {
   return this.http.put(`${this.apiUrl}/${id}`, producto);
 }
 
+buscar(filtros: {
+  q?: string;
+  minPrecio?: number;
+  maxPrecio?: number;
+}) {
+  let params: any = {};
+
+  if (filtros.q) params.q = filtros.q;
+  if (filtros.minPrecio != null) params.minPrecio = filtros.minPrecio;
+  if (filtros.maxPrecio != null) params.maxPrecio = filtros.maxPrecio;
+
+  return this.http.get<Producto[]>(
+    `${this.apiUrl}/productos`,
+    { params }
+  );
+}
 
   actualizarStock(id: number, stock: number): Observable<Producto> {
     return this.http.patch<Producto>(

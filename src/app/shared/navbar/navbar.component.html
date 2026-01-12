@@ -1,0 +1,51 @@
+<!-- NAVBAR -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <div class="container-fluid">
+    <a class="navbar-brand" routerLink="/">MiTienda</a>
+
+    <button class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#menu">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="menu">
+
+      <ul class="navbar-nav me-auto">
+        <li class="nav-item">
+          <a class="nav-link active" routerLink="/">Inicio</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/carrito">Carrito</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/productos">Productos</a>
+        </li>
+                <li class="nav-item">
+          <a class="nav-link" routerLink="/categorias">Categorias</a>
+        </li>
+
+                <li class="nav-item">
+          <a class="nav-link" routerLink="/buscar">Buscar Productos </a>
+        </li>
+      </ul>
+
+
+
+      <!-- Usuario logueado -->
+      <span *ngIf="usuario$ | async as usuario" class="text-white">
+        Hola, {{usuario.nombre}}
+        <a routerLink="/perfil" class="btn btn-outline-light btn-sm ms-2">Perfil</a>
+        <a routerLink="/perfil/pedidos" class="btn btn-outline-light btn-sm ms-1">Pedidos</a>
+        <button (click)="logout()" class="btn btn-danger btn-sm ms-1">Salir</button>
+            <!-- SOLO ADMIN -->
+
+      </span>
+
+      <!-- Usuario no logueado -->
+      <span *ngIf="!(usuario$ | async)">
+        <a routerLink="/login" class="btn btn-outline-light btn-sm me-1">Ingresar</a>
+        <a routerLink="/registro" class="btn btn-warning btn-sm">Registrarse</a>
+      </span>
+
+    </div>
+  </div>
+</nav>

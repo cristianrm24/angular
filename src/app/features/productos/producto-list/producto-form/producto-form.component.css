@@ -1,0 +1,7 @@
+.card {
+  border-radius: 15px;
+}
+.nav-link.active {
+  font-weight: bold;
+  color: #ffc107 !important; /* amarillo Bootstrap */
+}

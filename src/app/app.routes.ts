@@ -12,6 +12,7 @@ import { PedidoDetalleComponent } from './features/pedido/pedido-detalle/pedido-
 import { CheckoutExitoComponent } from './pages/checkout-exito/checkout-exito.component';
 import { PagoComponent } from './features/pago/pago.component';
 import { } from './features/pago/pago.component';
+import { BuscarComponent } from './pages/buscar/buscar.component';
 
 export const routes: Routes = [
   { path: 'productos', component: ProductoListComponent },
@@ -31,6 +32,12 @@ export const routes: Routes = [
   { path: 'perfil/pedidos',component: PedidoListComponent},
   { path: 'perfil/editar', loadComponent: () => import('./pages/usuario/editar-perfil/editar-perfil.component').then(m => m.EditarPerfilComponent)
 },
+
+  {
+    path: 'buscar',
+    component: BuscarComponent
+  },
+
 {
   path: 'categorias/nueva',
   loadComponent: () => import('./features/categorias/categorias-list/categoria-form/categoria-form.component')

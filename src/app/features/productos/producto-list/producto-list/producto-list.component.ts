@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../../../../service/auth.service';
+import { RouterModule } from '@angular/router';
 
 import { ProductoService } from '../../../../service/producto.service';
 import { Producto } from '../../../../data/producto/producto';
@@ -10,7 +11,7 @@ import { CarritoService } from '../../../../service/carrito.service';
 @Component({
   selector: 'app-producto-list',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule,RouterModule],
   templateUrl: './producto-list.component.html'
 })
 export class ProductoListComponent implements OnInit {
@@ -20,7 +21,7 @@ export class ProductoListComponent implements OnInit {
 
   constructor(  private productoService: ProductoService,
   private carritoService: CarritoService,
-      private authService: AuthService,
+      public authService: AuthService,
 
   private router: Router
 ) {}
