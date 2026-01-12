@@ -1,21 +1,12 @@
 <h2>Mis pedidos</h2>
 
-<div *ngFor="let p of pedidos" class="pedido">
-  <p><b>ID:</b> {{ p.idPedido }}</p>
-  <p><b>Fecha:</b> {{ p.fecha }}</p>
-  <p><b>Total:</b> ${{ p.total }}</p>
+<div *ngIf="cargando">Cargando...</div>
 
-  <a [routerLink]="['/pedido', p.idPedido]">Ver detalle</a>
-  <hr>
-</div>
-<div *ngFor="let p of pedidos">
-  <p><b>ID:</b> {{ p.idPedido }}</p>
-  <p><b>Fecha:</b> {{ p.fecha }}</p>
-  <p><b>Total:</b> ${{ p.total }}</p>
+<ul *ngIf="!cargando">
+  <li *ngFor="let p of pedidos">
+    Pedido #{{ p.idPedido }} -
+    Fecha: {{ p.fecha | date }}
 
-  <button (click)="descargarFactura(p.idPedido)">
-    Descargar factura
-  </button>
-
-  <hr>
-</div>
+    <a [routerLink]="['/pedido', p.idPedido]">Ver detalle</a>
+  </li>
+</ul>

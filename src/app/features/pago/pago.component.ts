@@ -20,7 +20,7 @@ export class PagoComponent {
     // ⏳ simulamos llamada a pasarela
     setTimeout(() => {
       // pago exitoso
-      this.router.navigate(['/checkout']);
+      this.router.navigate(['perfil/pedidos']);
     }, 2000);
   }
 

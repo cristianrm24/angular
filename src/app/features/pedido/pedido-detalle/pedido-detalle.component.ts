@@ -1,42 +1,38 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 
 import { PedidoService } from '../../../service/pedido.service';
-
 @Component({
-  selector: 'app-pedido-detalle',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, RouterModule],
   templateUrl: './pedido-detalle.component.html'
 })
 export class PedidoDetalleComponent implements OnInit {
 
   pedido: any;
   total = 0;
-  cargando = true;
 
   constructor(
     private route: ActivatedRoute,
     private pedidoService: PedidoService
   ) {}
 
-  ngOnInit(): void {
+  ngOnInit() {
     const id = Number(this.route.snapshot.paramMap.get('id'));
 
-    this.pedidoService.obtenerDetalle(id).subscribe({
-      next: (data: any) => {
-        this.pedido = data;
-        this.cargando = false;
-      },
-      error: err => {
-        console.error(err);
-        this.cargando = false;
-      }
-    });
+    this.pedidoService.obtenerPedido(id).subscribe(p => this.pedido = p);
+    this.pedidoService.totalPedido(id).subscribe(t => this.total = t);
+  }
 
-    this.pedidoService.totalPedido(id).subscribe({
-      next: t => this.total = t as number
-    });
+  descargarFactura() {
+    this.pedidoService.descargarFactura(this.pedido.idPedido)
+      .subscribe(blob => {
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `factura_${this.pedido.idPedido}.txt`;
+        a.click();
+      });
   }
 }

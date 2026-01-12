@@ -1,79 +1,54 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
-import { AuthService } from '../../service/auth.service';
+import { RouterModule, Router } from '@angular/router';
 
 import { CarritoService } from '../../service/carrito.service';
 import { PedidoService } from '../../service/pedido.service';
-import { Router } from '@angular/router';
+import { AuthService } from '../../service/auth.service';
+import { CarritoItem } from '../../data/carrito/carrito-item';
 
 @Component({
   selector: 'app-checkout',
   standalone: true,
-  imports: [
-    CommonModule,    // 👈 ngIf, ngFor, pipes
-    RouterModule
-  ],
+  imports: [CommonModule, RouterModule],
   templateUrl: './checkout.component.html'
 })
 export class CheckoutComponent implements OnInit {
 
-  total = 0;
-  cargando = true;
-  procesando = false;
+  items: CarritoItem[] = [];
+  total: number = 0;
 
   constructor(
     private carritoService: CarritoService,
-      private router: Router,
-  private authService: AuthService,
-
-    private pedidoService: PedidoService
+    private pedidoService: PedidoService,
+    private authService: AuthService,
+    private router: Router
   ) {}
-irAPago() {
-  this.router.navigate(['/pago']);
-}
 
-  ngOnInit(): void {
-    this.carritoService.total().subscribe({
-      next: total => {
-        this.total = total;
-        this.cargando = false;
-      },
-      error: () => {
-        alert('No se pudo obtener el total');
-        this.cargando = false;
-      }
-    });
-  }
-confirmarPedido() {
-  const usuario = this.authService.obtenerUsuario();
-  if (!usuario) return;
 
-  this.pedidoService.generarPedido(usuario.idUsuario).subscribe({
-    next: () => {
-      alert('Pedido generado correctamente');
-      this.carritoService.vaciarCarrito();
-      this.router.navigate(['/pedidos']);
-    },
-    error: err => console.error(err)
+ngOnInit(): void {
+  this.carritoService.obtenerCarrito().subscribe({
+    next: data => {
+      this.items = data.items;
+    }
+  });
+
+  this.carritoService.total().subscribe({
+    next: t => this.total = t
   });
 }
 
-/*
   confirmarPedido() {
-    if (this.total <= 0) {
-      alert('El carrito está vacío');
-      return;
-    }
+    const usuario = this.authService.obtenerUsuario();
+    if (!usuario) return;
 
-    this.procesando = true;
-
-    this.pedidoService.generarPedido().subscribe({
-      next: () => alert('Pedido generado correctamente'),
-      error: () => {
-        alert('Error al generar pedido');
-        this.procesando = false;
-      }
+    this.pedidoService.generarPedido(usuario.idUsuario).subscribe({
+      next: () => {
+        alert('Pedido generado correctamente');
+        this.carritoService.vaciarCarrito();
+        this.router.navigate(['/mis-pedidos']);
+      },
+      error: err => console.error('Error al generar pedido', err)
     });
-  }*/
+  }
 }

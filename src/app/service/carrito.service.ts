@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { AuthService } from './auth.service';
 import { environment } from '../../environments/environments';
+import { CarritoItem } from '../data/carrito/carrito-item';
 
 @Injectable({
   providedIn: 'root'
@@ -67,4 +68,8 @@ eliminarProducto(idProducto: number) {
       `${this.api}/usuarios/${this.getUserId()}/carrito/total`
     );
   }
+
+  // --- al final de tu servicio ---
+
+
 }

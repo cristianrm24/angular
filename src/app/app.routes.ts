@@ -28,6 +28,7 @@ export const routes: Routes = [
   { path: 'pedido/:id', component: PedidoDetalleComponent},
   { path: 'carrito', component: CarritoComponent },
   { path: 'pago', component: PagoComponent},
+
   { path: 'perfil',  loadComponent: () => import('./pages/usuario/perfil/perfil.component').then(m => m.PerfilComponent)},
   { path: 'perfil/pedidos',component: PedidoListComponent},
   { path: 'perfil/editar', loadComponent: () => import('./pages/usuario/editar-perfil/editar-perfil.component').then(m => m.EditarPerfilComponent)
