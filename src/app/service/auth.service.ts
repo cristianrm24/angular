@@ -33,7 +33,7 @@ export class AuthService {
   }
   setUsuario(usuario: Usuario) {
     localStorage.setItem('usuario', JSON.stringify(usuario));
-    this.usuarioSubject.next(usuario); // 🔥 NOTIFICA A TODOS
+    this.usuarioSubject.next(usuario);
   }
   estaAutenticado(): boolean {
     return this.obtenerUsuario() !== null;

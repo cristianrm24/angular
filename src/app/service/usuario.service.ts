@@ -14,11 +14,7 @@ export class UsuarioService {
 
   constructor(private http: HttpClient) {}
 
-  // =========================
-  // 👤 USUARIO
-  // =========================
 
-  /** Registrar usuario */
   registrar(usuario: {
     nombre: string;
     email: string;
@@ -48,10 +44,6 @@ export class UsuarioService {
       data
     );
   }
-
-  // =========================
-  // 📦 PEDIDOS
-  // =========================
 
   /** Pedidos del usuario */
   obtenerPedidos(idUsuario: number): Observable<Pedido[]> {

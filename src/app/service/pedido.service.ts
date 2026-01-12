@@ -15,21 +15,22 @@ export class PedidoService {
     private authService: AuthService
   ) {}
 
-  generarPedido() {
-    const usuario = this.authService.obtenerUsuario();
-    if (!usuario) {
-      throw new Error('Usuario no autenticado');
+generarPedido(idUsuario: number) {
+  return this.http.post(
+    `${this.api}/pedidos/generar`,
+    null,
+    {
+      params: {
+        idUsuario: idUsuario
+      }
     }
+  );
+}
 
-    return this.http.post(
-      `${this.api}/usuarios/${usuario.idUsuario}/pedidos`,
-      {}
-    );
-  }
 descargarFactura(idPedido: number) {
   return this.http.get(
     `${this.api}/pedidos/${idPedido}/factura`,
-    { responseType: 'blob' } // 👈 MUY IMPORTANTE
+    { responseType: 'blob' }
   );
 }
 obtenerDetalle(idPedido: number) {

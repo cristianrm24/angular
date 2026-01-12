@@ -11,7 +11,6 @@ export class ProductoService {
 
 private apiUrl = 'https://proyecto-z9eq.onrender.com/api/v1/productos';
 
-  // En Render luego lo cambiamos por la URL pública
 
   constructor(private http: HttpClient) {}
 
